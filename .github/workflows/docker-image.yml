@@ -9,10 +9,17 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file dockerimage/Dockerfile --tag my-image-name:$(date +%s)
+  
+  semgrep:
+    name: Scan
+    runs-on: ubuntu-20.04
+    container:
+      image: returntocorp/semgrep
+    steps:
+    - uses: actions/checkout@v3
+    - run: semgrep ci
