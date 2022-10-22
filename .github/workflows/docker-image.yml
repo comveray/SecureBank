@@ -32,6 +32,26 @@ jobs:
           base: ${{ github.event.repository.default_branch }}
           head: HEAD
           extra_args: --debug --only-verified
+          
+  depchecktest:
+    name: sca scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: build project with maven
+        run: mvn clean install
+      - name: check vulnerable dependencies
+        uses: dependency-check/Dependency-Check_Action@main
+        id: depcheck
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+          args: >
+            --failOnCVSS 10
+            --enableRetired
 
   publish: 
     needs: semgrep
