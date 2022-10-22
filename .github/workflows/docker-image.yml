@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  semgrep:
+  security-semgrep:
     name: codebase scan
     runs-on: ubuntu-latest
     container:
@@ -16,9 +16,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: semgrep --config=auto .
+      
+  security-trufflehog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: secret scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --debug --only-verified
 
   publish: 
-    needs: semgrep
+    needs: security-semgrep
     name: builds docker image
     runs-on: ubuntu-latest
     steps:
