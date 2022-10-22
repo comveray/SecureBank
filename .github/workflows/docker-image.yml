@@ -18,6 +18,7 @@ jobs:
       - run: semgrep --config=auto .
       
   security-trufflehog:
+    name: secret scan
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -28,11 +29,13 @@ jobs:
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
           extra_args: --debug --only-verified
 
   publish: 
     needs: security-semgrep
-    name: builds docker image
+    name: build docker image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
