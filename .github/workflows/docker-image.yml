@@ -39,8 +39,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: build project with maven
-        run: mvn clean install
       - name: check vulnerable dependencies
         uses: dependency-check/Dependency-Check_Action@main
         id: depcheck
