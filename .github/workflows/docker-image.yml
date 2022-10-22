@@ -7,12 +7,21 @@ on:
     branches: [ "master" ]
 
 jobs:
-
-  build:
-
+  semgrep:
+    name: codebase scan
     runs-on: ubuntu-latest
-
+    container:
+      image: returntocorp/semgrep
+    if: (github.actor != 'dependabot[bot]')
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file dockerimage/Dockerfile --tag my-image-name:$(date +%s)
+      - uses: actions/checkout@v3
+      - run: semgrep --config=auto .
+
+  publish: 
+    needs: semgrep
+    name: builds docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build the docker image
+        run: docker build . --file dockerimage/Dockerfile --tag my-image-name:$(date +%s)
