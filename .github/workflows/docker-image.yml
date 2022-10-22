@@ -8,10 +8,18 @@ on:
 
 jobs:
 
-  build:
-
+  semgrep:
+    name: Codebase Scan
     runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - uses: actions/checkout@v3
+      - run: semgrep --config=auto .
 
+  build:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
