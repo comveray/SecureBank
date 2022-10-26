@@ -15,7 +15,7 @@ jobs:
     if: (github.actor != 'dependabot[bot]')
     steps:
       - uses: actions/checkout@v3
-      - run: semgrep --config=auto .
+      - run: semgrep --config=auto . --json -o semgrep.json
   
   trufflehog:
     name: secret scan
