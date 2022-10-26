@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          semgrep --config=auto . --json
+          which python3
           
   
   trufflehog:
