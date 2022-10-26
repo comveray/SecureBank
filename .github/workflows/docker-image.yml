@@ -15,16 +15,7 @@ jobs:
     if: (github.actor != 'dependabot[bot]')
     steps:
       - uses: actions/checkout@v3
-      - run: | 
-          semgrep --config=auto . --json -o semgrep.json
-          /usr/bin/curl -X 'POST' 'http://http://ec2-3-26-221-37.ap-southeast-2.compute.amazonaws.com/:8080/api/v2/reimport-scan/' \
-          -H 'accept: application/json' \
-          -H 'Authorization: Token ${{ secrets.DEFECT_DOJO_API_KEY }}' \
-          -H 'Content-Type: multipart/form-data' \
-          -F 'test=1' \
-          -F 'file=@semgrep.json;type=application/json' \
-          -F 'scan_type=Semgrep JSON Report' \
-          -F 'tags=test' \
+      - run: which curl
           
   
   trufflehog:
