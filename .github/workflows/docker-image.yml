@@ -15,7 +15,9 @@ jobs:
     if: (github.actor != 'dependabot[bot]')
     steps:
       - uses: actions/checkout@v3
-      - run: which curl
+      - run: |
+          semgrep --config=auto . --json -o semgrep.json
+          wget --post-file=./semgrep.json --header="accept: application/json" --header="Authorization: Token ${{secrets.DEFECT_DOJO_API_KEY}}" --header="Content-Type: multipart/form-data"
   
   trufflehog:
     name: secret scan
