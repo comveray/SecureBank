@@ -16,8 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          semgrep --config=auto . --json -o semgrep.json
-          wget --post-file=./semgrep.json --header="accept: application/json" --header="Authorization: Token ${{secrets.DEFECT_DOJO_API_KEY}}" --header="Content-Type: multipart/form-data" http://ec2-3-26-221-37.ap-southeast-2.compute.amazonaws.com:8080/api/v2/reimport-scan/
+          semgrep --config=auto . --json
+          
   
   trufflehog:
     name: secret scan
