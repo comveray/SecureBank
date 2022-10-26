@@ -15,9 +15,8 @@ jobs:
     if: (github.actor != 'dependabot[bot]')
     steps:
       - uses: actions/checkout@v3
-      - run: semgrep ci
-        env: 
-           SEMGREP_RULES: p/default
+      - shell: bash
+      - run: which wget
   
   trufflehog:
     name: secret scan
